@@ -1,0 +1,551 @@
+@import "colors";
+
+#surround-modals {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+
+    .modal {
+        position: relative;
+        margin: 50px auto 30px auto;
+        width: 600px;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 6px;
+        box-shadow: 0 3px 9px rgba(0,0,0,0.5);
+        color: black;
+        opacity: 0;
+        z-index: 16;
+        transition: .4s;
+
+
+        .modal-header, .modal-body, .modal-footer {
+            padding: 15px;
+        }
+        .modal-header, .modal-body {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .modal-header {
+            position: relative;
+
+            h4 {
+                font-size: 19px;
+                font-weight: 500;
+            }
+
+            .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                height: 25px;
+                line-height: 1.3;
+                width: 25px;
+                text-shadow: 0 1px 0 #fff;
+                filter: alpha(opacity=20);
+                opacity: .2;
+                text-align: center;
+                font-size: 21px;
+                font-weight: 700;
+                user-select: none;
+
+                &:hover {
+                    cursor: pointer;
+                    filter: alpha(opacity=50);
+                    opacity: .5;
+                }
+            }
+        }
+
+        .modal-body {
+            padding: 25px 15px;
+            font-size: 15px;
+            color: #585858;
+            line-height: 1.4em;
+
+            a {
+                color: #1C1C1C;
+            }
+        }
+
+        .modal-footer {
+            padding-right: 18px;
+            text-align: right;
+
+            button {
+                outline: none;
+            }
+        }
+    }
+
+    #backdrop-modals {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: black;
+        opacity: 0;
+        transition: .6s;
+    }
+}
+
+.vac, .hac, .vhac {
+    position: relative;
+
+    & > *:first-child {
+        position: absolute;
+        display: inline-block;
+    }
+}
+.vac > *:first-child {
+    top: 50%;
+    transform: translateY(-50%);
+}
+.hac > *:first-child {
+    left: 50%;
+    transform: translateX(-50%);
+}
+.vhac > *:first-child {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.level {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .level-left, .level-right {
+        display: flex;
+        align-items: center;
+        flex-basis: auto;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .level-left {
+        justify-content: flex-start;
+    }
+
+    .level-left {
+        justify-content: flex-end;
+    }
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.max-w-100 {
+    max-width: 100%;
+}
+
+.min-w-100 {
+    min-width: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1140px;
+}
+
+$properties: (margin: m, padding: p);
+$spacers: (0: 0, 1: 0.25em, '1-5': 0.375em, 2: 0.5em, 3: 0.75em, 4: 1em, 5: 1.5em, 6: 2.5em, 7: 4em);
+$sides: (top: t, right: r, bottom: b, left: l);
+@each $propertyName, $propertyAbbrev in $properties {
+    @each $size, $spacer in $spacers {
+        @each $sideName, $sideAbbrev in $sides {
+            .#{$propertyAbbrev}#{$sideAbbrev}-#{$size} {
+                #{$propertyName}-#{$sideName}: $spacer !important;
+            }
+        }
+
+        .#{$propertyAbbrev}-#{$size} {
+            #{$propertyName}: $spacer !important;
+        }
+
+        .#{$propertyAbbrev}x-#{$size} {
+            #{$propertyName}-right: $spacer !important;
+            #{$propertyName}-left: $spacer !important;
+        }
+
+        .#{$propertyAbbrev}y-#{$size} {
+            #{$propertyName}-top: $spacer !important;
+            #{$propertyName}-bottom: $spacer !important;
+        }
+    }
+}
+
+.columns {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+    align-items: center;
+    align-content: flex-start;
+    gap: 0 0;
+
+    &.align-items-flex-start {
+        align-items: flex-start;
+    }
+
+    @each $size, $spacer in $spacers {
+        &.is-g-#{$size} {
+            margin: -#{$spacer};
+
+            & > .column {
+                padding: #{$spacer};
+            }
+        }
+    }
+
+    & > .column {
+        flex: 1 1 auto;
+        box-sizing: border-box;
+
+        @each $size in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) {
+            &.is-#{$size} {
+                flex-basis: calc((100% / 12) * #{$size});
+                max-width: calc((100% / 12) * #{$size});
+            }
+        }
+        &.is-stretched {
+            flex: 0 1 auto;
+        }
+        &.is-full {
+            flex-basis: 100%;
+            max-width: 100%;
+            flex-shrink: 0;
+        }
+        &.is-half {
+            flex-basis: 50%;
+            max-width: 50%;
+            flex-shrink: 0;
+        }
+        &.is-one-third {
+            flex-basis: calc(100% / 3);
+            max-width: calc(100% / 3);
+            flex-shrink: 0;
+        }
+        &.is-two-third {
+            flex-basis: calc(100% / 3 * 2);
+            max-width: calc(100% / 3 * 2);
+            flex-shrink: 0;
+        }
+        &.is-one-quarter {
+            flex-basis: 25%;
+            max-width: 25%;
+            flex-shrink: 0;
+        }
+        &.is-three-quarter {
+            flex-basis: 75%;
+            max-width: 75%;
+            flex-shrink: 0;
+        }
+    }
+}
+
+a.inherit {
+    text-decoration: none;
+    color: inherit;
+}
+
+.is-block {
+    display: block;
+    width: 100%;
+}
+.is-inline-block {
+    display: inline-block;
+}
+.is-flex {
+    display: flex;
+    width: 100%;
+    justify-content: left;
+}
+.is-inline-flex {
+    display: inline-flex;
+    justify-content: left;
+}
+
+// Text alignements
+.has-text-centered {
+    text-align: center;
+}
+.has-text-left {
+    text-align: left;
+}
+.has-text-right {
+    text-align: right;
+}
+.has-text-justify {
+    text-align: justify;
+}
+
+// Text weights
+.has-text-w-bold {
+    font-weight: bold;
+}
+.has-text-w-normal {
+    font-weight: normal;
+}
+.has-text-w-lighter {
+    font-weight: lighter;
+}
+.has-text-w-bolder {
+    font-weight: bolder;
+}
+
+// Text styles
+.has-text-s-italic {
+    font-style: italic;
+}
+.has-text-s-oblique {
+    font-style: oblique;
+}
+.has-text-s-oblique {
+    font-style: normal;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+$colors: (
+        "blue": $blue,
+        "indigo": $indigo,
+        "purple": $purple,
+        "pink": $pink,
+        "red": $red,
+        "orange": $orange,
+        "yellow": $yellow,
+        "green": $green,
+        "teal": $teal,
+        "cyan": $cyan,
+        "white": $white,
+        "gray": $gray,
+        "dark-gray": $dark-gray,
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "info": $info,
+        "warning": $warning,
+        "danger": $danger,
+        "light": $light,
+        "dark": $dark
+);
+
+@each $colorName, $color in $colors {
+    .has-text-color-#{$colorName} {
+        color: #{$color} !important;
+    }
+}
+
+$btnColors: (
+        "primary": ($primary, white),
+        "secondary": ($secondary, white),
+        "success": ($success, white),
+        "info": ($info, white),
+        "warning": ($warning, black),
+        "danger": ($danger, white),
+        "light": ($light, black),
+        "dark": ($dark, white)
+);
+
+.btn, button, input[type="button"], input[type="submit"] {
+    cursor: pointer;
+    padding: .45rem 0.9rem;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1.5;
+    font-weight: 400;
+    transition: 0.075s;
+    text-decoration: none;
+    text-align: center;
+    font-style: normal;
+
+    @each $colorName, $colors in $btnColors {
+        &.is-#{$colorName}:not(.is-outlined) {
+            background-color: nth($colors, 1);
+            color: nth($colors, 2);
+
+            &:hover {
+                background-color: darken(nth($colors, 1), 5%);
+            }
+
+            &:active {
+                background-color: darken(nth($colors, 1), 10%);
+            }
+        }
+        &.is-#{$colorName}.is-outlined {
+            background-color: transparent;
+            border-color: nth($colors, 1);
+            color: nth($colors, 1);
+
+            &:hover {
+                border-color: darken(nth($colors, 1), 5%);
+                color: darken(nth($colors, 1), 5%);
+            }
+
+            &:active {
+                border-color: darken(nth($colors, 1), 10%);
+                color: darken(nth($colors, 1), 10%);
+            }
+        }
+    }
+}
+
+.fake-btn {
+    padding: .45rem 0.9rem;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    white-space: nowrap;
+    vertical-align: middle;
+    line-height: 1.5;
+    font-weight: 400;
+    transition: 0.075s;
+    text-decoration: none;
+    text-align: center;
+    font-style: normal;
+
+    @each $colorName, $colors in $btnColors {
+        &.is-#{$colorName}:not(.is-outlined) {
+            background-color: nth($colors, 1);
+            color: nth($colors, 2);
+        }
+        &.is-#{$colorName}.is-outlined {
+            background-color: transparent;
+            border-color: nth($colors, 1);
+            color: nth($colors, 1);
+        }
+    }
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0.375rem;
+    font-weight: bold;
+}
+
+
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
+    padding: 1rem 1.2rem;
+    font-size: 1rem;
+    border: 1px solid #a8a8a8;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+
+    &.is-invalid {
+        border-color: $danger;
+
+        &:focus {
+            border-color: $danger;
+            box-shadow: 0 0 0 0.2rem transparentize($danger, 0.75);
+        }
+    }
+}
+
+select {
+    padding: 1rem 1.2rem;
+    font-size: 1rem;
+    border: 1px solid #a8a8a8;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+
+    &.is-invalid {
+        border-color: $danger;
+
+        &:focus {
+            border-color: $danger;
+            box-shadow: 0 0 0 0.2rem transparentize($danger, 0.75);
+        }
+    }
+}
+
+.field-error {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #dc3545;
+}
+
+input[type="checkbox"] {
+    float: left;
+    margin-top: 0.2rem;
+}
+.checkbox-label {
+    display: block;
+    font-size: 0.875rem;
+    margin-left: calc(13px + 3px + 0.75rem);
+}
+
+a {
+    color: $primary;
+}
+
+ul, ol {
+    padding-left: 2.5em;
+}
+
+.ta-l {
+    text-align: left;
+}
+.ta-r {
+    text-align: right;
+}
+.ta-c {
+    text-align: center;
+}
+.ta-j {
+    text-align: justify;
+}
+
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    line-height: 1.5;
+
+    @each $colorName, $colors in $alert-variants {
+        &.is-#{$colorName} {
+            background-color: map-get($colors, background);
+            border-color: map-get($colors, border);
+            color: map-get($colors, text);
+        }
+    }
+
+    .alert-heading {
+        margin-bottom: 0.5rem;
+        font-size: 1.4rem;
+        color: inherit;
+    }
+}
+
+@media (max-width: 828px) {
+    #surround-modals .modal {
+        position: relative;
+        width: auto;
+        margin: 20px;
+    }
+}

@@ -1,0 +1,32 @@
+@import "kyb/colors";
+
+#bottom-link {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#auth-value {
+    text-align: center;
+
+    p {
+        margin: 0;
+        display: inline-block;
+        font-weight: bold;
+        font-size: 18px;
+        margin-left: 10px;
+    }
+
+    img {
+        height: 24px;
+        width: 24px;
+        vertical-align: top;
+    }
+}
+
+#inner {
+    background-color: #f1f4f9;
+    border-radius: 8px;
+    padding: 18px 20px;
+}

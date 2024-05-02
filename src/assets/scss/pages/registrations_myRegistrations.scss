@@ -1,0 +1,68 @@
+@import "../addons/kyb/colors";
+@import "../layout/default.vars";
+
+h1.year {
+    font-size: 2.5em;
+
+    &:first-child {
+        margin-top: 0 !important;
+    }
+}
+
+.registration {
+    position: relative;
+    height: 140px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #252525;
+    background-size: cover;
+    background-position: center 0;
+
+    .shadow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: -moz-linear-gradient(90deg, $nav-color 30%, transparent 63%);
+        background: -webkit-linear-gradient(90deg, $nav-color 30%, transparent 63%);
+        background: linear-gradient(90deg, $nav-color 30%, transparent 63%);
+        z-index: 0;
+    }
+
+    .info {
+        position: relative;
+        height: 100%;
+        color: white;
+        z-index: 1;
+
+        h1 {
+            position: absolute;
+            bottom: -35px;
+            left: 25px;
+            font-size: 11em;
+            letter-spacing: 2px;
+            font-style: italic;
+            opacity: 0.25;
+            text-shadow: 8px 8px 0 black;
+        }
+
+        h2.discipline-name {
+            position: absolute;
+            bottom: 15px;
+            left: 18px;
+            font-size: 2.2em;
+            text-shadow: 4px 4px 5px black;
+        }
+
+        h2.period-datetime {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            padding: 12px 15px;
+            font-size: 1.4em;
+            background-color: rgba($nav-color, 0.9);
+            border-radius: 7px;
+        }
+    }
+}

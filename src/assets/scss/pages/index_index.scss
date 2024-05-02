@@ -1,0 +1,156 @@
+@import "../addons/kyb/colors";
+@import "../layout/default.vars";
+
+h2 {
+    font-size: 2rem;
+}
+
+.competition {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: $nav-color;
+    background-size: cover;
+    background-position: center 0;
+    position: relative;
+
+    .info {
+        color: white;
+        line-height: 1.5em;
+
+        .discipline {
+            font-size: 1.05em;
+            border-radius: 5px;
+            overflow: hidden;
+            max-width: 100%;
+
+            & > * {
+                height: 38px;
+                line-height: 38px;
+            }
+
+            .number {
+                padding: 0 12px;
+                font-size: 1.15em;
+                background-color: $danger;
+
+                svg {
+                    height: 21px;
+                    margin-top: 7.5px;
+                    margin-right: 0.35em;
+                }
+            }
+
+            .name {
+                padding: 0 18px;
+                background-color: white;
+                color: black;
+            }
+        }
+
+        .location {
+            font-size: 1.25em;
+
+            .level-right {
+                font-size: 0.75em;
+                line-height: 1.25em;
+                color: #6ac56a;
+            }
+        }
+
+        .passes .passe {
+            padding: 6px 12px;
+            border: 1px dashed white;
+            border-radius: 5px;
+            font-size: 0.875em;
+            text-align: center;
+        }
+
+        .register .level-left {
+            font-size: 1.1em;
+        }
+    }
+
+    a.link {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    a.register {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+.competition.horizontal {
+    background-size: 55%;
+    background-position: 0 center;
+
+    & > .columns {
+        align-items: stretch;
+    }
+
+    .info {
+        padding-left: 50% !important;
+        background: -moz-linear-gradient(90deg, transparent 20%, $nav-color 53%);
+        background: -webkit-linear-gradient(90deg, transparent 20%, $nav-color 53%);
+        background: linear-gradient(90deg, transparent 20%, $nav-color 53%);
+
+        .passes .column {
+            padding-right: 10px;
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+}
+.competition.vertical {
+    height: 440px;
+    position: relative;
+
+    .shadow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: -moz-linear-gradient(180deg, transparent 35%, $nav-color 75%);
+        background: -webkit-linear-gradient(180deg, transparent 35%, $nav-color 75%);
+        background: linear-gradient(180deg, transparent 35%, $nav-color 75%);
+    }
+
+    .info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        .location {
+            text-shadow: 2px 2px 3px black;
+        }
+
+        .passes .column {
+            padding-bottom: 10px;
+
+            &.period:nth-child(2n + 1) {
+                padding-right: 10px;
+            }
+        }
+    }
+}
+
+section#upcoming-championships {
+    & > .columns {
+        margin: -10px;
+
+        & > .column {
+            padding: 10px;
+        }
+    }
+}
