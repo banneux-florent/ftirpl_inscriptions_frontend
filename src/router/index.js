@@ -4,6 +4,7 @@ import TheNotFoundView from '@/views/TheNotFoundView.vue';
 import TheLoginView from '@/views/Auth/TheLoginView.vue';
 import store from "@/store/index.js";
 import ThePasswordView from "@/views/Auth/ThePasswordView.vue";
+import TheEmailRequiredView from "@/views/Auth/TheEmailRequiredView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,7 +48,7 @@ const router = createRouter({
     {
       path: '/auth/email-required',
       name: 'auth_email_required',
-      component: TheNotFoundView,
+      component: TheEmailRequiredView,
       meta: {
         authForbidden: true,
         layout: 'table-center'

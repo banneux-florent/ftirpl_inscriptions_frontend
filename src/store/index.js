@@ -11,9 +11,9 @@ const store = createStore({
   },
   mutations: {
     authenticate(state, { token, userId }) {
-      state.isAuthenticated = !!token;
       state.token = token;
       state.userId = userId;
+      state.isAuthenticated = !!token;
     },
     logout(state) {
       state.isAuthenticated = false
@@ -27,6 +27,7 @@ const store = createStore({
   },
   actions: {
     login({ commit }, { token, userId }) {
+      console.log(token, userId);
       commit('authenticate', { token, userId });
       // Here, you'd also want to set these in localStorage or sessionStorage
       localStorage.setItem('auth', JSON.stringify({ token, userId }));

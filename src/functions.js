@@ -156,3 +156,30 @@ export const formattedDateFromNow = function(date, locale) {
 export const formattedDate = function(date, locale, format = "LLLL") {
   return moment(date).locale(locale).format(format);
 }
+
+export const getIndexesFromKey = function (key, data) {
+  let indexes = [];
+  if (isArr(data) && isString(key)) {
+    for (let i = 0; i < data.length; i++) {
+      const elem = data[i];
+      if ("key" in elem) {
+        if (elem.key === key)
+          indexes.push(i);
+      }
+    }
+  }
+  return indexes;
+}
+
+export const getElementFromKey = function (key, data) {
+  if (isArr(data) && isString(key)) {
+    for (let i = 0; i < data.length; i++) {
+      const elem = data[i];
+      if ("key" in elem) {
+        if (elem.key === key)
+          return elem
+      }
+    }
+  }
+  return null;
+}

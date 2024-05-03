@@ -21,7 +21,8 @@
 
 <script>
 import axios from "axios";
-import {isDict, isString} from "@/functions.js";
+import {getElementFromKey, getIndexesFromKey, isNotEmptyArray} from "@/functions.js";
+import {getText} from "@/texts.js";
 
 export default {
   data() {
@@ -41,59 +42,48 @@ export default {
       this.alertError = null;
       try {
         const formData = { authValue: this.authValue };
-        const response = (await axios.post('http://localhost:8085/auth/login', formData));
+        const response = (await axios.post("/auth/login", formData));
         this.handleResponseData(response.data);
       }
       catch (error) {
         if (error.code === "ERR_NETWORK") {
-          this.alertError = "Le formulaire a rencontré un problème de connexion. Veuillez réessayer plus tard.";
+          this.alertError = getText("FORM_ERROR_TRY_AGAIN_LATER");
         } else if (!("response" in error)) {
-          this.alertError = "Le formulaire envoyé n'a pas obtenu de réponse. Veuillez réessayer plus tard.";
+          this.alertError = getText("FORM_NO_RESPONSE_TRY_AGAIN_LATER");
         } else {
           this.handleResponseData(error.response.data);
         }
       }
     },
     handleResponseData(data) {
-      if ("status" in data && "data" in data) {
-        const status = data.status;
-        const backendData = data.data;
-        if (status === "success") {
-          if ("key" in backendData) {
-            const key = backendData.key;
-            if (["REDIRECT_PASSWORD", "REDIRECT_REGISTER", "EMAIL_REQUIRED"].includes(key)) {
-              if ("authValue" in backendData) {
-                this.$store.dispatch('setAuthValue', backendData.authValue);
+      // florent-banneux@hotmail.com
 
-                if (key === "REDIRECT_PASSWORD") {
-                  this.$router.push({ name: 'auth_password' });
-                } else if (key === "REDIRECT_REGISTER") {
-                  this.$router.push({ name: 'auth_register' });
-                } else if (key === "EMAIL_REQUIRED") {
-                  this.$router.push({ name: 'auth_email_required' });
-                }
-              } else {
-                this.alertError = "Le formulaire a rencontré un problème. Veuillez réessayer.";
-              }
-            } else {
-              this.alertError = "Le formulaire a rencontré un problème. Veuillez réessayer.";
-            }
-          } else {
-            this.alertError = "Le formulaire a rencontré un problème. Veuillez réessayer.";
-          }
-        } else if (status === "error") {
-          if (isString(backendData)) {
-            this.alertError = backendData;
-          } else if (isDict(backendData)) {
-            this.fieldsError = backendData;
-          } else {
-            this.alertError = "Le formulaire a rencontré un problème. Veuillez réessayer.";
-          }
-        } else {
-          this.alertError = "Le formulaire a rencontré un problème. Veuillez réessayer.";
+      const indexes = getIndexesFromKey("FIELD_ERROR", data);
+      if (isNotEmptyArray(indexes)) {
+        for (let i = 0; i < indexes.length; i++) {
+          const element = data[indexes[i]];
+          this.fieldsError[element.field] = getText(element.message_key);
         }
       } else {
-        this.alertError = "Le formulaire a rencontré un problème. Veuillez réessayer.";
+        let element = getElementFromKey("ERROR_MESSAGE", data);
+        if (element) {
+          this.alertError = getText(element.message_key);
+        } else {
+          element = getElementFromKey("NEW_AUTH_VALUE", data);
+          if (element) {
+            this.$store.dispatch('setAuthValue', element.value);
+            element = getElementFromKey("REDIRECT", data);
+            if (element) {
+              const routeName = element.route_name;
+              if (this.$router.hasRoute(routeName))
+                this.$router.push({ name: routeName });
+            } else {
+              this.alertError = getText("FORM_ERROR_TRY_AGAIN");
+            }
+          } else {
+            this.alertError = getText("FORM_ERROR_TRY_AGAIN");
+          }
+        }
       }
     }
   }
