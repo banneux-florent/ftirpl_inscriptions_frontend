@@ -4,21 +4,22 @@ const store = createStore({
   state() {
     return {
       isAuthenticated: false,
-      token: null,
-      userId: null,
+      accessToken: null,
+      memberId: null,
       authValue: null,
     };
   },
   mutations: {
-    authenticate(state, { token, userId }) {
-      state.token = token;
-      state.userId = userId;
-      state.isAuthenticated = !!token;
+    authenticate(state, { accessToken, memberId }) {
+      state.isAuthenticated = true;
+      state.accessToken = accessToken;
+      state.memberId = memberId;
+      state.authValue = null;
     },
     logout(state) {
-      state.isAuthenticated = false
-      state.token = null;
-      state.userId = null;
+      state.isAuthenticated = false;
+      state.accessToken = null;
+      state.memberId = null;
       state.authValue = null;
     },
     setAuthValue(state, authValue) {
@@ -26,28 +27,20 @@ const store = createStore({
     }
   },
   actions: {
-    login({ commit }, { token, userId }) {
-      console.log(token, userId);
-      commit('authenticate', { token, userId });
-      // Here, you'd also want to set these in localStorage or sessionStorage
-      localStorage.setItem('auth', JSON.stringify({ token, userId }));
+    login({ commit }, { accessToken, memberId }) {
+      commit('authenticate', { accessToken, memberId });
+      localStorage.setItem('auth', JSON.stringify({ accessToken, memberId }));
     },
     checkLogin({ commit }) {
       const auth = JSON.parse(localStorage.getItem('auth'));
-      const authValue = localStorage.getItem('authValue');
-      if (auth && auth.token) {
+      if (auth)
         commit('authenticate', auth);
-      } else if (authValue) {
-        commit('setAuthValue', authValue);
-      }
     },
     logout({ commit }) {
       localStorage.removeItem('auth');
-      localStorage.removeItem('authValue');
       commit('logout');
     },
     setAuthValue({ commit }, authValue) {
-      localStorage.setItem('authValue', authValue);
       commit('setAuthValue', authValue);
     }
   }

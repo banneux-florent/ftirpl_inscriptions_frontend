@@ -84,11 +84,11 @@ export default {
         if (element) {
           this.alertError = getText(element.message_key);
         } else {
-          element = getElementFromKey("NEW_AUTH_VALUES", data);
+          element = getElementFromKey("NEW_AUTH_DATA", data);
           if (element) {
             this.$store.dispatch('login', {
-              token: element.token,
-              userId: element.memberId
+              accessToken: element.access_token,
+              memberId: element.member_id
             });
             element = getElementFromKey("REDIRECT", data);
             if (element) {

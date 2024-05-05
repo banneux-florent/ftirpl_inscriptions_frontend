@@ -60,20 +60,20 @@ const router = createRouter({
       component: TheNotFoundView
     }
   ]
-})
+});
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const authForbidden = to.matched.some(record => record.meta.authForbidden)
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const authForbidden = to.matched.some(record => record.meta.authForbidden);
   store.dispatch('checkLogin');
-  const isAuthenticated = store.state.isAuthenticated
+  const isAuthenticated = store.state.isAuthenticated;
 
   if (requiresAuth && !isAuthenticated) {
-    next('/auth/login')
+    next('/auth/login');
   } else if (authForbidden && isAuthenticated) {
-    next('/')
+    next('/');
   } else {
-    next()
+    next();
   }
 });
 
