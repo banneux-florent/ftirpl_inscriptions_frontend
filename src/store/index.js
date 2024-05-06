@@ -1,4 +1,5 @@
 import {createStore} from "vuex"
+import axios from "axios";
 
 const store = createStore({
   state() {
@@ -15,12 +16,14 @@ const store = createStore({
       state.accessToken = accessToken;
       state.memberId = memberId;
       state.authValue = null;
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
     },
     logout(state) {
       state.isAuthenticated = false;
       state.accessToken = null;
       state.memberId = null;
       state.authValue = null;
+      delete axios.defaults.headers.common['Authorization'];
     },
     setAuthValue(state, authValue) {
       state.authValue = authValue;
