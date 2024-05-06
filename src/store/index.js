@@ -39,9 +39,13 @@ const store = createStore({
       if (auth)
         commit('authenticate', auth);
     },
-    logout({ commit }) {
-      localStorage.removeItem('auth');
-      commit('logout');
+    logout({ commit, state }) {
+      if (state.isAuthenticated) {
+        axios.get("/auth/logout");
+        localStorage.removeItem('auth');
+        commit('logout');
+      }
+      return Promise.resolve();
     },
     setAuthValue({ commit }, authValue) {
       commit('setAuthValue', authValue);

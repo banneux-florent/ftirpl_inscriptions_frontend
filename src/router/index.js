@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TheIndexView from '@/components/TheIndexView.vue';
 import TheNotFoundView from '@/views/TheNotFoundView.vue';
 import TheLoginView from '@/views/Auth/TheLoginView.vue';
 import store from "@/store/index.js";
 import ThePasswordView from "@/views/Auth/ThePasswordView.vue";
 import TheEmailRequiredView from "@/views/Auth/TheEmailRequiredView.vue";
+import TheRegisterView from "@/views/Auth/TheRegisterView.vue";
+import TheIndexView from "@/views/TheIndexView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,7 +40,7 @@ const router = createRouter({
     {
       path: '/auth/register',
       name: 'auth_register',
-      component: TheNotFoundView,
+      component: TheRegisterView,
       meta: {
         authForbidden: true,
         layout: 'table-center'
@@ -53,6 +54,16 @@ const router = createRouter({
         authForbidden: true,
         layout: 'table-center'
       }
+    },
+    {
+      path: '/gtc',
+      name: 'gtc',
+      component: TheNotFoundView
+    },
+    {
+      path: '/gdpr',
+      name: 'gdpr',
+      component: TheNotFoundView
     },
     {
       path: '/:catchAll(.*)',

@@ -33,8 +33,9 @@ export default {
     };
   },
   created() {
-    // For safety + removes authValue if present
-    this.$store.dispatch('logout');
+    if (this.$store.state.isAuthenticated)
+      this.$store.dispatch('logout'); // For safety
+    this.$store.dispatch('setAuthValue', null);
   },
   methods: {
     async handleSubmit() {
@@ -72,11 +73,20 @@ export default {
           element = getElementFromKey("NEW_AUTH_VALUE", data);
           if (element) {
             this.$store.dispatch('setAuthValue', element.value);
-            element = getElementFromKey("REDIRECT", data);
+            element = getElementFromKey("REGISTRATION_STATE", data);
             if (element) {
-              const routeName = element.route_name;
-              if (this.$router.hasRoute(routeName))
-                this.$router.push({ name: routeName });
+              const state = element.state;
+              switch (state) {
+                case "HAS_PASSWORD":
+                  this.$router.push({ name: "auth_password" });
+                  break;
+                case "NO_PASSWORD":
+                  this.$router.push({ name: "auth_register" });
+                  break;
+                case "NO_EMAIL":
+                  this.$router.push({ name: "auth_email_required" });
+                  break;
+              }
             } else {
               this.alertError = getText("FORM_ERROR_TRY_AGAIN");
             }

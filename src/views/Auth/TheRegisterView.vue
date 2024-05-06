@@ -1,8 +1,8 @@
 <template>
   <div id="box">
     <img src="/img/logo.png" alt="Logo CPLiège" class="logo">
-    <h3 class="mb-5">Connexion</h3>
-    <p class="mb-5">Pour poursuivre votre authentification et accéder aux matchs, veuillez saisir votre mot de passe.</p>
+    <h3 class="mb-5">Inscription</h3>
+    <p class="mb-5">Aucun mot de passe n'a encore été associé à ce compte. Veuillez choisir un mot de passe pour vos futures connexions au portail et inscriptions à nos championnats provinciaux.</p>
     <div id="auth-value" class="mb-5">
       <img src="/img/icons/profile.svg" alt="Icône compte">
       <p>{{ authValue }}</p>
@@ -12,13 +12,33 @@
       <div class="mb-4">
         <input
             type="password"
-            v-model="password"
-            :class="{'is-invalid': 'password' in fieldsError}"
+            v-model="password1"
+            :class="{'is-invalid': 'password1' in fieldsError}"
             placeholder="Mot de passe"
         />
-        <div v-if="'password' in fieldsError" class="field-error">{{ fieldsError.password }}</div>
+        <div v-if="'password1' in fieldsError" class="field-error">{{ fieldsError.password1 }}</div>
       </div>
-      <input type="submit" id="next" class="btn is-primary is-block" value="Suivant" />
+      <div class="mb-4">
+        <input
+            type="password"
+            v-model="password2"
+            :class="{'is-invalid': 'password2' in fieldsError}"
+            placeholder="Retapez votre mot de passe"
+        />
+        <div v-if="'password2' in fieldsError" class="field-error">{{ fieldsError.password2 }}</div>
+      </div>
+      <div class="mb-4">
+        <input
+            type="checkbox"
+            v-model="acceptConditions"
+            :checked="acceptConditions"
+        />
+        <label class="checkbox-label" for="<?= $field; ?>">
+          En vous inscrivant, vous acceptez nos <router-link :to="{ name: 'gtc' }">Conditions Générales d'Utilisation</router-link> et notre <router-link :to="{ name: 'gdpr' }">Règlement Général sur la Protection des Données</router-link>.
+        </label>
+        <div v-if="'acceptConditions' in fieldsError" class="field-error">{{ fieldsError.acceptConditions }}</div>
+      </div>
+      <input type="submit" id="next" class="btn is-primary is-block" value="Valider" />
     </form>
     <a id="bottom-link" @click="performLogout">Changer de compte</a>
   </div>
@@ -33,7 +53,9 @@ export default {
   data() {
     return {
       authValue: null,
-      password: '',
+      password1: '',
+      password2: '',
+      acceptConditions: false,
       fieldsError: {},
       alertError: null
     };
@@ -51,8 +73,13 @@ export default {
       this.fieldsError = {};
       this.alertError = null;
       try {
-        const formData = { authValue: this.authValue, password: this.password };
-        const response = (await axios.post("/auth/password", formData));
+        const formData = {
+          authValue: this.authValue,
+          password1: this.password1,
+          password2: this.password2,
+          acceptConditions: this.acceptConditions
+        };
+        const response = (await axios.post("/auth/register", formData));
         this.handleResponseData(response.data);
       }
       catch (error) {

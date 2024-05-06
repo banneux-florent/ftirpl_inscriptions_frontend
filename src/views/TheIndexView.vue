@@ -6,6 +6,7 @@
   <div id="box">
     <p>Index</p>
     <p>Access: {{ access }}</p>
+    <div class="btn is-danger mt-5" @click="performLogout">Déconnexion</div>
   </div>
 </template>
 
@@ -29,6 +30,13 @@ export default {
 
     const auth = JSON.parse(localStorage.getItem('auth'));
     this.access = auth.accessToken;
+  },
+  methods: {
+    performLogout() {
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push({ name: 'auth_login' });
+      });
+    }
   }
 };
 </script>
